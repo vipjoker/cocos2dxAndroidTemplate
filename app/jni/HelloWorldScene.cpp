@@ -6,6 +6,7 @@ USING_NS_CC;
 Scene *HelloWorld::createScene()
 {
     Scene *sceen = Scene::createWithPhysics();
+    sceen->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = HelloWorld::create();
     sceen->addChild(layer);
     return sceen;
@@ -32,6 +33,8 @@ bool HelloWorld::init()
             "CloseNormal.png",
             "CloseSelected.png",
             CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+
+
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -61,15 +64,15 @@ bool HelloWorld::init()
     }
 
     // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
+    auto sprite = Sprite::create("rocket.png");
+    auto body = PhysicsBody::createBox(sprite->getContentSize());
+    sprite->setPhysicsBody(body);
     if (sprite == nullptr) {
         problemLoading("'HelloWorld.png'");
     } else {
-        // position the sprite on the center of the screen
         sprite->setPosition(
                 Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
-        // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
     EventListenerTouchOneByOne *listener = EventListenerTouchOneByOne::create();
